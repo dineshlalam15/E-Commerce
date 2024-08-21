@@ -1,7 +1,8 @@
-import { serverConnection } from './src/utils/connection.js';
+import { serverConnection, databaseConnection } from './src/utils/connection.js';
 
-try {
-  serverConnection();
-} catch (error) {
+databaseConnection().then(() => {
+  serverConnection()
+}).catch((error) => {
   console.error(error);
-}
+  process.exit(1)
+});
