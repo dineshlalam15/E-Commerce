@@ -1,0 +1,63 @@
+import { Schema, model } from 'mongoose';
+const userSchema = new Schema(
+  {
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      lastName: {
+        type: String,
+        trim: true,
+      },
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    phoneNo: {
+      type: String,
+      trim: true,
+    },
+    avatar: {
+      type: String,
+    },
+    password: {
+      type: String,
+      minLength: 8,
+      trim: true,
+      required: function () {
+        return !this.googleId;
+      },
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'customer', 'merchant'],
+      default: customer,
+    },
+    merchant: {
+      type: Schema.Types.ObjectId,
+      ref: 'Merchant',
+      default: null,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+    },
+    refreshToken: {
+      type: String,
+    },
+    accessToken: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+const User = new model('User', userSchema);
+
+export default User;

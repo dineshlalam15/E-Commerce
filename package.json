@@ -15,10 +15,9 @@
   },
   "keywords": [
     "User",
-    "Schema",
-    "model",
-    "export",
-    "default"
+    "Merchant",
+    "Product",
+    "Brand"
   ],
   "author": "Dinesh Kumar Lalam",
   "license": "ISC",
@@ -30,6 +29,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.5.3",
+    "mongoose-slug-generator": "^1.0.4",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3"
   }
