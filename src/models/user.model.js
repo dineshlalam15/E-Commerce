@@ -37,7 +37,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ['admin', 'customer', 'merchant'],
-      default: customer,
+      default: 'customer'
     },
     merchant: {
       type: Schema.Types.ObjectId,
@@ -58,6 +58,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const User = new model('User', userSchema);
+const User = model('User', userSchema);
+
 
 export default User;

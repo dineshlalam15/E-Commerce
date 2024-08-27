@@ -54,6 +54,6 @@ const productSchema = new Schema(
   { timestamps: true }
 );
 
-const Product = new model('Product', productSchema);
+const Product = model('Product', productSchema);
 
 export default Product;

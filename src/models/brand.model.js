@@ -43,6 +43,6 @@ const brandSchema = new Schema(
   { timestamps: true }
 );
 
-const Brand = new model('Brand', brandSchema);
+const Brand = model('Brand', brandSchema);
 
 export default Brand;
