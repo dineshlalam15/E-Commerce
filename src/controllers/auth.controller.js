@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
+import { uploadToAzure } from '../utils/azure.js';
 import { hash } from 'bcrypt';
 import {
   isEmpty,
@@ -42,7 +43,7 @@ const signUp = async (req, res) => {
     ) {
       const avatarLocalPath = req.files.avatar[0].path;
       if (avatarLocalPath) {
-        avatar = await uploadOnCloudinary(avatarLocalPath);
+        avatar = await uploadToAzure(avatarLocalPath);
       }
     }
     const newUser = await User.create({

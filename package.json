@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/dineshlalam15/E-Commerce#readme",
   "dependencies": {
+    "@azure/storage-blob": "^12.24.0",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.4.0",
     "cookie-parser": "^1.4.6",
