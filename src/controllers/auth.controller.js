@@ -66,7 +66,9 @@ const signUp = async (req, res) => {
     const requiredFields = [firstName, email, password];
     for (const [key, value] of Object.entries(requiredFields)) {
       if (isEmpty(value)) {
-        return res.status(400).json({ error: `Key ${key}: ${value} can't be empty` });
+        return res
+          .status(400)
+          .json({ error: `Key ${key}: ${value} can't be empty` });
       }
     }
     if (!validateEmail(email)) {
@@ -110,9 +112,7 @@ const signUp = async (req, res) => {
     });
     return res.status(201).json({
       message: 'New User Registered',
-      details: await User.findById(newUser._id).select(
-        '-password'
-      ),
+      details: await User.findById(newUser._id).select('-password'),
     });
   } catch (error) {
     console.error(error);
@@ -161,4 +161,25 @@ const signIn = async (req, res) => {
     });
 };
 
-export { signUp, signIn };
+const logout = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $unset: {
+          refreshToken: '',
+          accessToken: '',
+        },
+      },
+      { new: true }
+    );
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    return res.status(200).json({ message: 'User logged out successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export { signUp, signIn, logout, refreshAccessToken };
