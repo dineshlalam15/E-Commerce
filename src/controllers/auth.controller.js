@@ -108,7 +108,7 @@ const signUp = async (req, res) => {
       password: await hash(password, 10),
       phoneNo: phoneNo,
       avatar: avatar ? avatar : undefined,
-      role: 'customer',
+      role: 'user',
     });
     return res.status(201).json({
       message: 'New User Registered',

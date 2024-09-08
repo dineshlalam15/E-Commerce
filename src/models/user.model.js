@@ -38,8 +38,8 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'customer', 'merchant'],
-      default: 'customer'
+      enum: ['admin', 'user'],
+      default: 'user'
     },
     merchant: {
       type: Schema.Types.ObjectId,
