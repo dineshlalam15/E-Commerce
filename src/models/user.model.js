@@ -25,9 +25,6 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
-    avatar: {
-      type: String,
-    },
     password: {
       type: String,
       minLength: 8,

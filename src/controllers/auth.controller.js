@@ -88,17 +88,6 @@ const signUp = async (req, res) => {
         .status(400)
         .json({ error: 'User with this email already exists' });
     }
-    let avatar;
-    if (
-      req.files &&
-      Array.isArray(req.files.avatar) &&
-      req.files.avatar.length > 0
-    ) {
-      const avatarLocalPath = req.files.avatar[0].path;
-      if (avatarLocalPath) {
-        avatar = await uploadToAzure(avatarLocalPath);
-      }
-    }
     const newUser = await User.create({
       name: {
         firstName: firstName,
@@ -107,7 +96,6 @@ const signUp = async (req, res) => {
       email: email,
       password: await hash(password, 10),
       phoneNo: phoneNo,
-      avatar: avatar ? avatar : undefined,
       role: 'user',
     });
     return res.status(201).json({
@@ -161,25 +149,4 @@ const signIn = async (req, res) => {
     });
 };
 
-const logout = async (req, res) => {
-  try {
-    await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        $unset: {
-          refreshToken: '',
-          accessToken: '',
-        },
-      },
-      { new: true }
-    );
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-    return res.status(200).json({ message: 'User logged out successfully' });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-export { signUp, signIn, logout, refreshAccessToken };
+export { signUp, signIn, refreshAccessToken };
