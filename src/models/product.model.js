@@ -1,12 +1,27 @@
-import { Schema, model, plugin } from 'mongoose';
-import slug from 'mongoose-slug-generator';
-mongooseSlugGenerator
-const options = {
-  separator: '-',
-  lang: 'en',
-  truncate: 120,
-};
-plugin(slug, options);
+import { Schema, model } from 'mongoose';
+
+const reviewSchema = new Schema({
+  user: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  comment: {
+    type: String,
+  },
+  productID: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
+});
+const Review = model('Review', reviewSchema);
 
 const productSchema = new Schema(
   {
@@ -15,14 +30,16 @@ const productSchema = new Schema(
       trim: true,
       required: true,
     },
-    slug: {
-      type: String,
-      slug: ['name', 'description'],
-      unique: true,
-    },
     description: {
       type: String,
+      required: [true, 'Please enter your description'],
     },
+    productImages: [
+      {
+        type: String,
+        required: true,
+      },
+    ],    
     isActive: {
       type: Boolean,
       default: false,
@@ -39,17 +56,18 @@ const productSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Brand',
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    ],
     availableAt: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Merchant',
-        default: null,
       },
-    ],
+    ]    
   },
   { timestamps: true }
 );

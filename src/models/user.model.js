@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import { compare } from 'bcrypt';
 
 const userSchema = new Schema(
   {
@@ -35,9 +34,19 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'user'],
-      default: 'user'
+      enum: ['admin', 'user', 'merchant'],
+      default: 'user',
     },
+    avatar: {
+      type: String,
+    },
+    address: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Address',
+        default: null,
+      },
+    ],
     merchant: {
       type: Schema.Types.ObjectId,
       ref: 'Merchant',
@@ -57,6 +66,6 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const User = model('User', userSchema);
+const User = model('User', userSchema, 'users');
 
 export default User;

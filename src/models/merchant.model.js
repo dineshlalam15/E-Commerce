@@ -2,13 +2,16 @@ import { Schema, model } from 'mongoose';
 
 const merchantSchema = new Schema(
   {
-    name: {
-      firstName: {
-        type: String,
-      },
-      lastName: {
-        type: String,
-      },
+    storeName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      minLength: 8,
+      trim: true,
+      required: true
     },
     email: {
       type: String,
@@ -16,14 +19,13 @@ const merchantSchema = new Schema(
     phoneNo: {
       type: String,
     },
+    address: {
+      type: Schema.Types.ObjectId,
+      ref: 'Address'
+    },
     isActive: {
       type: Boolean,
       default: false,
-    },
-    storeName: {
-      type: String,
-      required: true,
-      trim: true,
     },
     products: [
       {
@@ -40,6 +42,6 @@ const merchantSchema = new Schema(
   { timestamps: true }
 );
 
-const Merchant = model('Merchant', merchantSchema);
+const Merchant = model('Merchant', merchantSchema, 'merchants');
 
 export default Merchant;

@@ -1,12 +1,4 @@
-import { Schema, model, plugin } from 'mongoose';
-import slug from 'mongoose-slug-generator';
-
-const options = {
-  separator: '-',
-  lang: 'en',
-  truncate: 120,
-};
-plugin(slug, options);
+import { Schema, model } from 'mongoose';
 
 const brandSchema = new Schema(
   {
@@ -18,11 +10,6 @@ const brandSchema = new Schema(
     description: {
       type: String,
       trim: true,
-    },
-    slug: {
-      type: String,
-      slug: ['name', 'description'],
-      unique: true,
     },
     brandLogo: {
       type: String,
