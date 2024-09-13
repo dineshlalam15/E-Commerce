@@ -7,7 +7,8 @@ dotenv.config();
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = process.env.AZURE_CONTAINER_NAME;
 const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-const sasToken = process.env.SAS_TOKEN
+const containerClient = blobServiceClient.getContainerClient(containerName);
+const sasToken = process.env.SAS_TOKEN;
 
 const getContentType = (filePath) => {
   const extension = extname(filePath).toLowerCase();
@@ -25,7 +26,6 @@ const getContentType = (filePath) => {
 };
 
 const uploadToAzure = async (localPath) => {
-  const containerClient = blobServiceClient.getContainerClient(containerName);
   const blobName = localPath.split('/').pop();
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
   const contentType = getContentType(localPath);
@@ -43,4 +43,20 @@ const uploadToAzure = async (localPath) => {
   }
 };
 
-export { uploadToAzure };
+const deleteFromAzure = async (imageURL) => {
+  try {
+    const url = new URL(imageURL);
+    const [blobPathInParts] = url.pathname
+      .split('/')
+      .filter(Boolean)
+      .slice(1);
+    const blobName = blobPathInParts.join('/');
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    await blockBlobClient.delete();
+  } catch (error) {
+    console.error(error);
+    process.exit(1)
+  }
+};
+
+export { uploadToAzure, deleteFromAzure };

@@ -88,6 +88,17 @@ const signUp = async (req, res) => {
         .status(400)
         .json({ error: 'User with this email already exists' });
     }
+    let avatar;
+    if (
+      req.files &&
+      Array.isArray(req.files.avatar) &&
+      req.files.avatar.length > 0
+    ) {
+      const avatarLocalPath = req.files.avatar[0].path;
+      if (avatarLocalPath) {
+        avatar = await uploadToAzure(avatarLocalPath);
+      }
+    }
     const newUser = await User.create({
       name: {
         firstName: firstName,
@@ -96,6 +107,7 @@ const signUp = async (req, res) => {
       email: email,
       password: await hash(password, 10),
       phoneNo: phoneNo,
+      avatar: avatar,
       role: 'user',
     });
     return res.status(201).json({

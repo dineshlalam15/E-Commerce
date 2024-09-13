@@ -7,20 +7,20 @@ const verifyToken = async (req, res, next) => {
   try {
     const accessToken = req.cookies.accessToken;
     console.log(accessToken);
-    
+
     if (!accessToken) {
       const refreshToken = req.cookies.refreshToken;
       console.log(refreshToken);
-      
+
       if (!refreshToken) {
         return res.status(401).json({ error: 'No Token Provided' });
       }
       const decodedInfo = jwt.verify(refreshToken, process.env.SECRET_TOKEN);
       console.log(decodedInfo);
-      
+
       const findUser = await User.findById(decodedInfo._id);
       console.log(findUser);
-      
+
       if (!findUser || findUser.refreshToken != refreshToken) {
         return res
           .status(403)
@@ -43,9 +43,7 @@ const verifyToken = async (req, res, next) => {
     const decodedInfo = jwt.verify(accessToken, process.env.SECRET_TOKEN);
     const findUser = await User.findById(decodedInfo._id);
     if (!findUser || findUser.accessToken != accessToken) {
-      return res
-        .status(403)
-        .json({ error: 'Invalid Access Token' });
+      return res.status(403).json({ error: 'Invalid Access Token' });
     }
     req.user = findUser;
     next();
